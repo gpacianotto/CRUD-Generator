@@ -21,9 +21,23 @@ const validatePassword = (password) => {
     return true;
 }
 
+const validateRole = (role) => {
+    const rolesAllowed = [
+        'root', 'admin', 'common-user'
+    ];
+
+    if(rolesAllowed.includes(role))
+    {
+        return true;
+    }
+
+    return false;
+}
+
 const validator = {
     email: validateEmail,
-    password: validatePassword
+    password: validatePassword,
+    role: validateRole
 }
 
 module.exports = validator
