@@ -34,10 +34,34 @@ const validateRole = (role) => {
     return false;
 }
 
+const validateParentId = (id) => {
+    if (!Number.isInteger(id)){
+        return false;
+    }
+    if(id < -1)
+    {
+        return false;
+    }
+    return true;
+}
+
+const validateSystemId = (systemId) => {
+    if (!Number.isInteger(systemId)){
+        return false;
+    }
+    if(systemId < -1)
+    {
+        return false;
+    }
+    return true;
+}
+
 const validator = {
     email: validateEmail,
     password: validatePassword,
-    role: validateRole
+    role: validateRole,
+    parentId: validateParentId,
+    systemId: validateSystemId
 }
 
 module.exports = validator

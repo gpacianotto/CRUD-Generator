@@ -14,6 +14,7 @@ function signUpFirebase(body, res){
           message: "Email is not in a correct format"
         }
       )
+      return;
     }
 
     if(!loginValidator.password(body.password))
@@ -25,6 +26,7 @@ function signUpFirebase(body, res){
           message: "Password must be at least 8 characters long"
         }
       )
+      return;
     }
 
     if(!loginValidator.role(body.role))
@@ -36,38 +38,93 @@ function signUpFirebase(body, res){
           message: "User Roles allowed: 'root', 'admin', 'common-user'"
         }
       )
+      return;
     }
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth, body.email, body.password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        const objectSend = {
-          fireBaseUid: user.uid,
-          role: body.role,
-          fullName: body.fullName,
-          birthDate: body.birthDate,
-          active: body.active,
-          website: body.website,
-          fireBaseEmail: user.email
+
+    if(!loginValidator.parentId(body.parentId))
+    {
+      res.json(
+        {
+          event: "error", 
+          code: "Validation Error", 
+          message: "Parent ID invalid"
+        }
+      )
+      return;
+    }
+
+    if(loginValidator.parentId(body.parentId))
+    {
+      User.findAll({where: {id: body.parentId}}).then((parent) => {
+        
+
+        if(parent.length < 1)
+        {
+          res.json(
+            {
+              event: "error", 
+              code: "Context Error", 
+              message: "Your parent ID is not valid or doesn't exist"
+            }
+          )
+          return;
         }
 
-        User.create(objectSend).then((p) => {
-          res.json(p);
-        }).catch((err) => {
-          res.json(err);
-        });
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
+        if(parent.length > 1)
+        {
+          res.json(
+            {
+              event: "error", 
+              code: "Context Error", 
+              message: "Your parent ID is duplicated, please contact the admnistrators"
+            }
+          )
+          return;
+        }
 
-        res.json({event: "error", code: errorCode, message: errorMessage});
-        // ..
-      });
+        
 
+        // const auth = getAuth();
+        // createUserWithEmailAndPassword(auth, body.email, body.password)
+        //   .then((userCredential) => {
+        //     // Signed in
+        //     const user = userCredential.user;
+        //     const objectSend = {
+        //       fireBaseUid: user.uid,
+        //       role: body.role,
+        //       fullName: body.fullName,
+        //       birthDate: body.birthDate,
+        //       active: body.active,
+        //       website: body.website,
+        //       fireBaseEmail: user.email,
 
-    //res.json({email: body.email, senha: body.password});
+        //     }
+
+        //     User.create(objectSend).then((p) => {
+              
+        //       let responseComplete = p
+              
+        //       responseComplete.parent = parent;
+
+        //       res.json(responseComplete);
+        //     }).catch((err) => {
+        //       res.json(err);
+        //     });
+
+            
+        //   })
+        //   .catch((error) => {
+        //     const errorCode = error.code;
+        //     const errorMessage = error.message;
+
+        //     res.json({event: "error", code: errorCode, message: errorMessage});
+        //     // ..
+        //   });
+
+          }).catch((err) => {
+            res.json(err);
+          });
+        }
 
 }
 
