@@ -11,6 +11,10 @@ const Account = database.define('account', {
         allowNull: false,
         primaryKey: true
     },
+    accountUid: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
     systemId: {
         type: Sequelize.INTEGER,
         references:{

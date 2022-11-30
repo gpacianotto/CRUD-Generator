@@ -3,6 +3,7 @@ const User = require('../Models/user');
 const Accounts = require('../Models/account');
 const System = require('../Models/systems');
 const bcrypt = require('bcrypt');
+const uid2 = require('uid2');
 require('dotenv').config();
 
 async function doesAccountExistInSystem(user, systemId) 
@@ -156,21 +157,20 @@ async function signUp(body, res)
     const hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(parseInt(process.env.SALT_HASH)));
     const existingUser = await doesUserExist(email);
     
-
     if(!!existingUser)
     {
-        
         if(role === "root")
         {
             const empty = await isRootEmpty();
             const rootSystem = await getRootSystem(); 
-
+            console.log("entrou aqui!");
             if(!!empty && !!rootSystem)
             {
-                
+                console.log("entrou!");
                 await Accounts.create({
                     systemId: parseInt(process.env.ROOT_SYSTEM_ID),
                     userId: existingUser.userId,
+                    accountUid: uid2(40),
                     passwordHash: hashedPassword,
                     role: role,
                 }).then((result) => {
@@ -240,6 +240,7 @@ async function signUp(body, res)
                     systemId: systemId,
                     userId: existingUser.userId,
                     passwordHash: hashedPassword,
+                    accountUid: uid2(40),
                     role: role,
                 }).then((account) => {
                     const accountResult = {
@@ -283,6 +284,7 @@ async function signUp(body, res)
                     await Accounts.create({
                         systemId: parseInt(process.env.ROOT_SYSTEM_ID),
                         userId: userCreated.userId,
+                        accountUid: uid2(40),
                         passwordHash: hashedPassword,
                         role: role,
                     }).then((result) => {

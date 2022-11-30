@@ -2,6 +2,7 @@ const database = require('./Configs/db')
 const User = require('./Models/user')
 const System = require('./Models/systems');
 const Account = require('./Models/account');
+const AccountSession = require('./Models/account-session');
 
 async function sync()
 {

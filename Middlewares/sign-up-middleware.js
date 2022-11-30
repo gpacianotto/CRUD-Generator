@@ -7,7 +7,9 @@ async function signUpMiddleware(req, res, next) {
     const body = req.body;
 
     const {systemId, role} = body; 
- 
+
+    console.log("linha 11, middleware");
+     
     if(!systemToken && role !== 'root')
     {
         res.json(
@@ -31,7 +33,7 @@ async function signUpMiddleware(req, res, next) {
         return;
     }
 
-    if(!!systemToken && !!systemId && role !== 'root')
+    if(!!systemToken && !!systemId)
     {
         await System.findAll({where: {systemId: systemId, systemToken: systemToken}}).then((systems) => {
             if(systems.length > 1)
