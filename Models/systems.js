@@ -13,6 +13,11 @@ const System = database.define('systems', {
         allowNull: false,
         unique: true,
     },
+    uid: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
+    },
     urlFront: {
         type: Sequelize.STRING
     },

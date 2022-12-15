@@ -12,6 +12,9 @@ const firebaseConfig = require('./Configs/firebase');
 const signUpMiddleware = require('./Middlewares/sign-up-middleware');
 const signIn = require('./Auth/signin');
 const signInMiddleware = require('./Middlewares/sign-in-middleware');
+const authenticators = require('./Middlewares/authenticator');
+const cors = require('cors');
+const doesRootSystemExists = require('./Checkers/root-system-exists');
 
 databaseSync();
 
@@ -22,6 +25,8 @@ const appFirebase = initializeApp(firebaseConfig);
 
 const app = express()
 const port = 3000
+
+app.use(cors());
 
 
 app.get('/', (req, res) => {
@@ -50,11 +55,24 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 app.post('/sign-in', jsonParser, signInMiddleware, (req, res) => signIn(req.body, res))
 
-app.post('/sign-up', jsonParser, signUpMiddleware, (req, res) => signUp.signUp(req.body, res))
+app.post('/sign-up', jsonParser, signUpMiddleware, (req, res) => signUp.signUp(req, res))
 
 app.post('/new-system', jsonParser, (req, res) => newSystem(req.body, res));
 
-app.post('/testing', jsonParser, middlewareTest, test);
+app.get('/root-system-exists', jsonParser, (req, res) => doesRootSystemExists(req, res))
+
+app.post('/testing', jsonParser, authenticators.authSystem, authenticators.authUser, test);
+
+app.post('/testing123', jsonParser, (req, res) => {
+  res.json(req.body);
+});
+
+app.get('/test-api', jsonParser, (req, res) => {
+  res.json({
+    message: "testing",
+    state: "everything ok"
+  })
+})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

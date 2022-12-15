@@ -13,6 +13,39 @@ class RequestService {
 
     constructor() {
         this.currentSystem = null;
+        this.currentUser = null;
+        this.currentAccount = null;
+        this.currentSession = null;
+    }
+
+    setCurrentUser(user)
+    {
+        this.currentUser = user;
+    }
+
+    getcurrentUser()
+    {
+        return this.currentUser;
+    }
+
+    setCurrentAccount(account)
+    {
+        this.currentAccount = account
+    }
+
+    getCurrentAccount()
+    {
+        return this.currentAccount;
+    }
+
+    setCurrentSession(session)
+    {
+        this.currentSession = session;
+    }
+
+    getCurrentSession()
+    {
+        return this.currentSession;
     }
 
     setCurrentSystem(system)

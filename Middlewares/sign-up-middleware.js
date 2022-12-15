@@ -8,7 +8,6 @@ async function signUpMiddleware(req, res, next) {
 
     const {systemId, role} = body; 
 
-    console.log("linha 11, middleware");
      
     if(!systemToken && role !== 'root')
     {
@@ -21,28 +20,18 @@ async function signUpMiddleware(req, res, next) {
         )
         return;
     }
-    if(!systemId && role !== 'root')
-    {
-        res.json(
-            {
-            event: "error", 
-            code: "Consistancy Error", 
-            message: "Your systemId was not sent in body"
-            }
-        )
-        return;
-    }
+    
 
-    if(!!systemToken && !!systemId)
+    if(!!systemToken)
     {
-        await System.findAll({where: {systemId: systemId, systemToken: systemToken}}).then((systems) => {
+        await System.findAll({where: {systemToken: systemToken}}).then((systems) => {
             if(systems.length > 1)
             {
                 res.json(
                     {
                     event: "error", 
                     code: "Consistancy Error", 
-                    message: "There are 2 systems with the same ID and Token, please contact the adminstrators"
+                    message: "There are 2 systems with the same Token, please contact the adminstrators"
                     }
                 )
                 return;

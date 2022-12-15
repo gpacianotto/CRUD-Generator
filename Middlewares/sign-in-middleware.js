@@ -37,7 +37,7 @@ async function signInMiddleware(req, res, next) {
             {
             event: "error", 
             code: "Authentication Error", 
-            message: "You should send your system token"
+            message: "You system token was not sent on Headers"
             }
         )
         return;

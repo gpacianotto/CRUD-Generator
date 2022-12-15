@@ -137,12 +137,15 @@ async function signIn(body, res) {
                 {
                     res.json(
                         {
-                        event: "test", 
-                        code: "System and user", 
-                        system: system,
-                        user: user,
-                        account: account,
-                        session: sessionRegister
+                        event: "success", 
+                        code: "System and user",
+                        data: {
+                            system: system,
+                            user: user,
+                            account: account,
+                            session: sessionRegister
+                        } 
+                        
                         }
                     )
                 }

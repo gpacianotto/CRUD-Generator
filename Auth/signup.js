@@ -4,6 +4,7 @@ const Accounts = require('../Models/account');
 const System = require('../Models/systems');
 const bcrypt = require('bcrypt');
 const uid2 = require('uid2');
+const authenticators = require('../Middlewares/authenticator');
 require('dotenv').config();
 
 async function doesAccountExistInSystem(user, systemId) 
@@ -100,11 +101,14 @@ async function getRootSystem()
     return response;
 }
 
-async function signUp(body, res) 
+async function signUp(req, res) 
 {
 
-    const {email, password, role, systemId} = body;
-
+    const {email, password, role, systemId} = req.body;
+    const header = req.headers; 
+    const systemToken = header?.systemtoken;
+    
+    console.log("email: ", req.body);
 
     if(!loginValidator.email(email)){
         res.json(
@@ -151,8 +155,18 @@ async function signUp(body, res)
             }
         )
     }
-    
-    //if(role)
+
+    if(!systemToken)
+    {
+        res.json(
+            {
+            event: "error", 
+            code: "Authentication Error", 
+            message: "You system token was not sent on Headers"
+            }
+        )
+        return;
+    }
 
     const hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(parseInt(process.env.SALT_HASH)));
     const existingUser = await doesUserExist(email);
@@ -164,6 +178,31 @@ async function signUp(body, res)
             const empty = await isRootEmpty();
             const rootSystem = await getRootSystem(); 
             console.log("entrou aqui!");
+
+            if(!rootSystem)
+            {
+                res.json(
+                    {
+                    event: "error", 
+                    code: "Consistancy Error", 
+                    message: "There's no root system registered!"
+                    }
+                )
+                return;
+            }
+
+            if(!empty)
+            {
+                res.json(
+                    {
+                    event: "error", 
+                    code: "Consistancy Error", 
+                    message: "There's already a root account registered!"
+                    }
+                )
+                return;
+            }
+
             if(!!empty && !!rootSystem)
             {
                 console.log("entrou!");
@@ -201,11 +240,13 @@ async function signUp(body, res)
                 })
                 return;
             }
+
+            
         }
 
         if(role === 'admin')
         {
-            const system = await doesSystemExist();
+            const system = await authenticators.getSystemByToken(systemToken);
             const account = await doesAccountExistInSystem(existingUser, systemId);
             
             if(!system)

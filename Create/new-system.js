@@ -14,6 +14,7 @@ function urlValidation(url) {
 
 const Systems = require("../Models/systems");
 const hashing = require('js-sha256');
+const uid2 = require("uid2");
 
 async function newSystem(body, res)
 {
@@ -50,6 +51,7 @@ async function newSystem(body, res)
 
     await Systems.create({
         name: name,
+        uid: uid2(40),
         urlFront: urlFront,
         urlBack: "localhost:3000",
         framework: framework,
