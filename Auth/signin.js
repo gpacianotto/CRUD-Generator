@@ -53,8 +53,19 @@ async function registerSession(account)
                     accountId: account.accountId
                 }
             }
-        ).then((res) => {
-            response = hash;
+        ).then(async (res) => {
+
+            const session = await verifySession(account);
+
+            if(!!session)
+            {
+                response = session;
+            }
+            else {
+                response = false;
+            }
+            
+
         }).catch((error) => {
             console.log(error);
             response = false;
@@ -148,6 +159,7 @@ async function signIn(body, res) {
                         
                         }
                     )
+                    return;
                 }
 
                 if(!sessionRegister)
