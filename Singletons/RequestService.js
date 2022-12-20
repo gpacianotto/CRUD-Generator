@@ -1,3 +1,5 @@
+const System = require('../Models/systems');
+
 class RequestService {
 
     static instance;
@@ -16,6 +18,45 @@ class RequestService {
         this.currentUser = null;
         this.currentAccount = null;
         this.currentSession = null;
+
+        /*
+            state = 0 <- não se sabe
+            state = 1 <- existe
+            state = 2 <- não existe
+        */
+
+        this.systemRootExists = {
+            state: 0
+        }
+    }
+
+    async verifyIfSystemRootExists() {
+        let response;
+        let flagError;
+
+        await System.findAll({where: {name: "root"}}).then((result) => {
+            if(result.length === 1)
+            {
+                response = 1;
+            }
+
+            else {
+                response = 2
+            }
+        }).catch((err) => {
+            response = 0;
+            flagError = true;
+        })
+
+        return response
+    }
+
+    doesSystemRootExists() {
+        return this.systemRootExists.state;
+    }
+
+    setSystemRootExists(state) {
+        this.systemRootExists.state = state;
     }
 
     setCurrentUser(user)

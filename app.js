@@ -15,6 +15,7 @@ const signInMiddleware = require('./Middlewares/sign-in-middleware');
 const authenticators = require('./Middlewares/authenticator');
 const cors = require('cors');
 const doesRootSystemExists = require('./Checkers/root-system-exists');
+const listSystems = require('./List/list-systems');
 
 databaseSync();
 
@@ -57,9 +58,11 @@ app.post('/sign-in', jsonParser, signInMiddleware, (req, res) => signIn(req.body
 
 app.post('/sign-up', jsonParser, signUpMiddleware, (req, res) => signUp.signUp(req, res))
 
-app.post('/new-system', jsonParser, (req, res) => newSystem(req.body, res));
+app.post('/systems/new', jsonParser, authenticators.authSystem, authenticators.authRootUser, (req, res) => newSystem(req.body, res));
 
-app.get('/root-system-exists', jsonParser, (req, res) => doesRootSystemExists(req, res))
+app.get('/systems/list', jsonParser, authenticators.authSystem, authenticators.authRootUser, listSystems);
+
+app.get('/root-system-exists', jsonParser, (req, res) => doesRootSystemExists(req, res));
 
 app.post('/testing', jsonParser, authenticators.authSystem, authenticators.authUser, test);
 
