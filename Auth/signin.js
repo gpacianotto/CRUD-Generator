@@ -6,6 +6,7 @@ const sha256 = require('js-sha256');
 const loginValidator = require('../Helpers/Validators/login-validator');
 const RequestService = require('../Singletons/RequestService');
 const AccountSession = require('../Models/account-session');
+const System = require('../Models/systems');
 
 async function verifySession(account)
 {
@@ -20,6 +21,25 @@ async function verifySession(account)
             response = false
         }
         
+    }).catch(() => {
+        response = false;
+    })
+
+    return response;
+}
+
+async function getSystemByID(id)
+{
+    let response;
+    
+    await System.findAll({where: {systemId: id}}).then((systems) => {
+        if(systems.length === 1)
+        {
+            response = systems[0];
+        }
+        else {
+            response = false;
+        }
     }).catch(() => {
         response = false;
     })
@@ -91,32 +111,22 @@ async function registerSession(account)
 
 async function signIn(body, res) {
     
-    const {email, password} = body;
+    const {email, password, systemId} = body;
     const service = RequestService.getInstance();
-    const system = service.getCurrentSystem();
+    let system = service.getCurrentSystem();
     
-    if(!loginValidator.email(email))
-    {
-        res.json(
-            {
-            event: "error", 
-            code: "Validation Error", 
-            message: "Email is not in a correct format"
-            }
-        )
-        return;
-    }
-    if(!system)
-    {
-        res.json(
-            {
-            event: "error", 
-            code: "Authentication Error", 
-            message: "System not defined"
-            }
-        )
-        return;
-    }
+    // if(!loginValidator.email(email))
+    // {
+    //     res.json(
+    //         {
+    //         event: "error", 
+    //         code: "Validation Error", 
+    //         message: "Email is not in a correct format"
+    //         }
+    //     )
+    //     return;
+    // }
+    
 
     const user = await SignUp.doesUserExist(email);
 
@@ -134,8 +144,31 @@ async function signIn(body, res) {
 
     if(!!user)
     {
-        const account = await SignUp.doesAccountExistInSystem(user, system.systemId);
+        console.log("system ID:",systemId);
+        let account;
+        if(!!systemId)
+        {
+            account = await SignUp.doesAccountExistInSystem(user, systemId);
+            system = await getSystemByID(systemId);
+            
+        }
+        else {
+            account = await SignUp.doesAccountExistInSystem(user, system?.systemId);
+        }
+
+        //console.log("conta:",account);
         
+        if(!system)
+        {
+            res.json(
+                {
+                event: "error", 
+                code: "Authentication Error", 
+                message: "System not defined"
+                }
+            )
+            return;
+        }
         if(!!account)
         {
             const rightPassword = bcrypt.compareSync(password, account.passwordHash);

@@ -6,7 +6,11 @@ async function listSystems(req, res, next)
     const rules = listingRules;
     const perPage = rules.perPage;
 
-    await System.findAndCountAll({limit: perPage, offset: 0}).then((result) => {
+    const page = req?.query?.page;
+
+    const offset = (page - 1) * perPage;
+
+    await System.findAndCountAll({limit: perPage, offset: offset}).then((result) => {
         res.json({
             event: "OK",
             response: result

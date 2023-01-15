@@ -16,6 +16,8 @@ const authenticators = require('./Middlewares/authenticator');
 const cors = require('cors');
 const doesRootSystemExists = require('./Checkers/root-system-exists');
 const listSystems = require('./List/list-systems');
+const listAccounts = require('./List/list-accounts');
+const permissionVerifier = require('./Middlewares/permission-verifyer');
 
 databaseSync();
 
@@ -60,7 +62,25 @@ app.post('/sign-up', jsonParser, signUpMiddleware, (req, res) => signUp.signUp(r
 
 app.post('/systems/new', jsonParser, authenticators.authSystem, authenticators.authRootUser, (req, res) => newSystem(req.body, res));
 
+app.post(
+  '/table/new', 
+  jsonParser, 
+  authenticators.authSystem, 
+  authenticators.authRootUser, 
+  (req, res, next) => permissionVerifier(req, res, next, ['admin']),
+  
+)
+
 app.get('/systems/list', jsonParser, authenticators.authSystem, authenticators.authRootUser, listSystems);
+
+app.get(
+  '/accounts/list', 
+  jsonParser, 
+  authenticators.authSystem, 
+  authenticators.authUser,
+  (req, res, next) => permissionVerifier(req, res, next, ['admin', 'root']), 
+  listAccounts,
+  )
 
 app.get('/root-system-exists', jsonParser, (req, res) => doesRootSystemExists(req, res));
 

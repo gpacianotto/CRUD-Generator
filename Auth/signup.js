@@ -12,10 +12,10 @@ async function doesAccountExistInSystem(user, systemId)
     let response;
 
     console.log("user: ", user);
-
+    console.log("system ID", systemId)
     await Accounts.findAll({where: {userId: user.userId, systemId: systemId}})
     .then((accounts) => {
-        if(accounts.length > 0)
+        if(accounts.length === 1)
         {
             response = accounts[0];
         }
@@ -145,16 +145,16 @@ async function signUp(req, res)
         return;
     }
     
-    if(!loginValidator.systemId(systemId) && role != 'root')
-    {
-        res.json(
-            {
-            event: "error", 
-            code: "Validation Error", 
-            message: "Invalid System ID"
-            }
-        )
-    }
+    // if(!loginValidator.systemId(systemId) && role != 'root')
+    // {
+    //     res.json(
+    //         {
+    //         event: "error", 
+    //         code: "Validation Error", 
+    //         message: "Invalid System ID"
+    //         }
+    //     )
+    // }
 
     if(!systemToken)
     {
@@ -244,10 +244,10 @@ async function signUp(req, res)
             
         }
 
-        if(role === 'admin')
+        if(role === 'admin' || role === 'common-user')
         {
             const system = await authenticators.getSystemByToken(systemToken);
-            const account = await doesAccountExistInSystem(existingUser, systemId);
+            const account = await doesAccountExistInSystem(existingUser, system?.systemId);
             
             if(!system)
             {
@@ -278,7 +278,7 @@ async function signUp(req, res)
             if(!account && !!system)
             {
                 await Accounts.create({
-                    systemId: systemId,
+                    systemId: system.systemId,
                     userId: existingUser.userId,
                     passwordHash: hashedPassword,
                     accountUid: uid2(40),
@@ -293,7 +293,7 @@ async function signUp(req, res)
                         createdAt: account.createdAt
                     }
                     res.json({
-                        message: "Admin Account Registered Successfully",
+                        message: account.role + " Account Registered Successfully",
                         account: accountResult,
                         system: system
                     })
@@ -385,9 +385,36 @@ async function signUp(req, res)
                 
             }
 
-            if(role === "admin")
+            if(role === "admin" || role === "common-user")
             {
+                const system = await authenticators.getSystemByToken(systemToken);
+                const account = await doesAccountExistInSystem(existingUser, system?.systemId);
                 
+                if(!system)
+                {
+                    res.json(
+                        {
+                        event: "error", 
+                        code: "Consistancy Error", 
+                        message: "This system does not exist in our database."
+                        }
+                    )
+                    return;
+                }
+
+
+                if(!!account)
+                {
+                    res.json(
+                        {
+                        event: "error", 
+                        code: "Consistancy Error", 
+                        message: "There's already an account with this email in this system!"
+                        }
+                    )
+                    return;
+                }
+
             }
             
             // res.json({message: "Email Criado!", response: response})

@@ -64,7 +64,7 @@ class RequestService {
         this.currentUser = user;
     }
 
-    getcurrentUser()
+    getCurrentUser()
     {
         return this.currentUser;
     }
