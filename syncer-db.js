@@ -3,6 +3,8 @@ const User = require('./Models/user')
 const System = require('./Models/systems');
 const Account = require('./Models/account');
 const AccountSession = require('./Models/account-session');
+const MetaTables = require('./Models/meta-tables');
+const MetaCollumns = require('./Models/meta-collumns');
 
 async function sync()
 {

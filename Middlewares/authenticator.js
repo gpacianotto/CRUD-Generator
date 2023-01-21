@@ -33,6 +33,7 @@ async function getUserAccountBySessionToken(token)
     let session;
     let account;
     let user;
+    let usersSystem;
 
     await AccountSession.findAll({where: {token: token}}).then((res) => {
         if(res.length === 1)
@@ -80,10 +81,21 @@ async function getUserAccountBySessionToken(token)
         user = false;
     })
 
+    await System.findAll({where: {systemId: account.systemId}}).then((systems) => {
+        if(systems.length === 1)
+        {
+            usersSystem = systems[0];
+        }
+        else {
+            usersSystem = false;
+        }
+    })
+
     const completeUser = {
         user: user,
         account: account,
-        session: session
+        session: session,
+        usersSystem: usersSystem
     }
     return completeUser;
 }   
@@ -162,7 +174,7 @@ async function authUser(req, res, next) {
 
     const user = await getUserAccountBySessionToken(token);
 
-    if(!!user.account && !!user.session && !!user.user)
+    if(!!user.account && !!user.session && !!user.user && !!user.usersSystem)
     {
         const expiration = user.session.expiresIn;
         const expirationDate = new Date(expiration);
@@ -182,6 +194,7 @@ async function authUser(req, res, next) {
             requestService.setCurrentUser(user.user);
             requestService.setCurrentAccount(user.account);
             requestService.setCurrentSession(user.session);
+            requestService.setUsersSystem(user.usersSystem);
         
             next();
         }

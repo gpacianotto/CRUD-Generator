@@ -18,6 +18,7 @@ class RequestService {
         this.currentUser = null;
         this.currentAccount = null;
         this.currentSession = null;
+        this.usersSystem = null;
 
         /*
             state = 0 <- não se sabe
@@ -97,6 +98,16 @@ class RequestService {
     getCurrentSystem()
     {
         return this.currentSystem;
+    }
+
+    setUsersSystem(system)
+    {
+        this.usersSystem = system;
+    }
+
+    getUsersSystem()
+    {
+        return this.usersSystem;
     }
 
 }

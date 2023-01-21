@@ -18,6 +18,7 @@ const doesRootSystemExists = require('./Checkers/root-system-exists');
 const listSystems = require('./List/list-systems');
 const listAccounts = require('./List/list-accounts');
 const permissionVerifier = require('./Middlewares/permission-verifyer');
+const createNewTable = require('./Create/new-table');
 
 databaseSync();
 
@@ -66,9 +67,9 @@ app.post(
   '/table/new', 
   jsonParser, 
   authenticators.authSystem, 
-  authenticators.authRootUser, 
+  authenticators.authUser, 
   (req, res, next) => permissionVerifier(req, res, next, ['admin']),
-  
+  (req, res) => createNewTable(req, res)
 )
 
 app.get('/systems/list', jsonParser, authenticators.authSystem, authenticators.authRootUser, listSystems);
