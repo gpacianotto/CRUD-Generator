@@ -19,6 +19,8 @@ const listSystems = require('./List/list-systems');
 const listAccounts = require('./List/list-accounts');
 const permissionVerifier = require('./Middlewares/permission-verifyer');
 const createNewTable = require('./Create/new-table');
+const listTables = require('./List/list-tables');
+const create = require('./CRUDOperations/create');
 
 databaseSync();
 
@@ -72,6 +74,24 @@ app.post(
   (req, res) => createNewTable(req, res)
 )
 
+app.delete(
+  '/table/delete',
+  jsonParser,
+  authenticators.authSystem, 
+  authenticators.authUser, 
+  (req, res, next) => permissionVerifier(req, res, next, ['admin']),
+  // (req, res) => {}
+);
+
+app.get(
+  '/table/list',
+  jsonParser,
+  authenticators.authSystem,
+  authenticators.authUser,
+  (req, res, next) => permissionVerifier(req, res, next, ['admin']),
+  listTables
+)
+
 app.get('/systems/list', jsonParser, authenticators.authSystem, authenticators.authRootUser, listSystems);
 
 app.get(
@@ -81,7 +101,17 @@ app.get(
   authenticators.authUser,
   (req, res, next) => permissionVerifier(req, res, next, ['admin', 'root']), 
   listAccounts,
-  )
+)
+
+app.post(
+  '/create/:tableId',
+  jsonParser,
+  authenticators.authSystem,
+  authenticators.authUser,
+  (req, res, next) => permissionVerifier(req, res, next, ['admin', 'common-user']), 
+  create
+)
+
 
 app.get('/root-system-exists', jsonParser, (req, res) => doesRootSystemExists(req, res));
 

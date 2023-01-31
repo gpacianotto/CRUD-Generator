@@ -46,7 +46,8 @@ async function createNewTable(req, res) {
             const userSystem = requestService.getUsersSystem();
             await MetaTables.create({
                 systemId: userSystem.systemId,
-                nameTable: realName
+                nameTable: realName,
+                simpleName: name
             }).then(async (metaTable) => {
 
                 let newRows = [];

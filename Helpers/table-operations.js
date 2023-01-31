@@ -103,12 +103,34 @@ async function deleteTable(name) {
     return response;
 } 
 
+async function runSQL(sql) {
+    let response = {
+        event: "",
+        code: "",
+        message: "",
+        data: undefined
+    }
+
+    try {
+        response.data = await database.query(sql, {raw: true});
+        response.event = "OK"
+        response.message = "SQL executed Successfully: " + sql
+    }
+    catch(err) {
+        response.event = "error"
+        response.code = "Syntax error SQL"
+        response.message = "An error ocurred while trying to execute your SQL, error: " + err
+    }
+
+    return response;
+}
 
 
 const operations = {
     doesTableExists: doesTableExists,
     createTable: createTable,
-    deleteTable: deleteTable
+    deleteTable: deleteTable,
+    runSQL: runSQL
 }
 
 module.exports = operations

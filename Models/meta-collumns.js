@@ -43,6 +43,14 @@ const MetaCollumns = database.define('meta-collumns', {
     }
 })
 
-MetaTables.hasMany(MetaCollumns);
+MetaTables.hasMany(MetaCollumns, {
+    foreignKey: "tableId",
+    as: "collumns"
+});
+
+MetaCollumns.belongsTo(MetaTables, {
+    foreignKey: 'tableId',
+    as: "table"
+})
 
 module.exports = MetaCollumns

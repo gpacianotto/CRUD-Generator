@@ -20,10 +20,19 @@ const MetaTables = database.define('meta-tables', {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true
+    },
+    simpleName: {
+        type: Sequelize.STRING,
+        allowNull: false,
     }
     
 })
 
-System.hasMany(MetaTables);
+System.hasMany(MetaTables, {
+    foreignKey: 'systemId',
+    as: 'system'
+});
+
+
 
 module.exports = MetaTables;
