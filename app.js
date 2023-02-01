@@ -21,6 +21,10 @@ const permissionVerifier = require('./Middlewares/permission-verifyer');
 const createNewTable = require('./Create/new-table');
 const listTables = require('./List/list-tables');
 const create = require('./CRUDOperations/create');
+const read = require('./CRUDOperations/read');
+const list = require('./CRUDOperations/list');
+const update = require('./CRUDOperations/update');
+const destroy = require('./CRUDOperations/destroy');
 
 databaseSync();
 
@@ -110,6 +114,42 @@ app.post(
   authenticators.authUser,
   (req, res, next) => permissionVerifier(req, res, next, ['admin', 'common-user']), 
   create
+)
+
+app.get(
+  '/read/:tableId',
+  jsonParser,
+  authenticators.authSystem,
+  authenticators.authUser,
+  (req, res, next) => permissionVerifier(req, res, next, ['admin', 'common-user']),
+  read
+)
+
+app.get(
+  '/list/:tableId',
+  jsonParser,
+  authenticators.authSystem,
+  authenticators.authUser,
+  (req, res, next) => permissionVerifier(req, res, next, ['admin', 'common-user']),
+  list
+)
+
+app.put(
+  '/update/:tableId',
+  jsonParser,
+  authenticators.authSystem,
+  authenticators.authUser,
+  (req, res, next) => permissionVerifier(req, res, next, ['admin', 'common-user']),
+  update
+)
+
+app.delete(
+  '/destroy/:tableId',
+  jsonParser,
+  authenticators.authSystem,
+  authenticators.authUser,
+  (req, res, next) => permissionVerifier(req, res, next, ['admin', 'common-user']),
+  destroy
 )
 
 

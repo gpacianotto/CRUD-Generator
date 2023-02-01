@@ -64,7 +64,7 @@ async function create(req, res) {
         res.json({
             event: "error",
             code: "Concistancy error",
-            message: "Tou don't have access to this table!",
+            message: "You don't have access to this table!",
         });
         return;
     }
@@ -140,7 +140,7 @@ async function create(req, res) {
         res.json({
             event: "OK",
             message: "your data has been stored successfully",
-            response: createRows.data,
+            response: createRows,
         });
     }
 
