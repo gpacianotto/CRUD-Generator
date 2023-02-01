@@ -1,0 +1,35 @@
+{
+  "name": "crud-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "firebase": "^9.9.4",
+    "js-sha256": "^0.9.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.21.5",
+    "uid2": "^1.0.0"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.4.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gpacianotto/CRUD-Generator.git"
+  },
+  "author": "gpacianotto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gpacianotto/CRUD-Generator/issues"
+  },
+  "homepage": "https://github.com/gpacianotto/CRUD-Generator#readme"
+}
