@@ -2,10 +2,23 @@ class TableCollumn {
     constructor (name, type, size, options) {
         const possibleSizes = ['variable', 'fixed'];
         const possibleTypes = ['integer', 'string'];
-        this.primaryKey = options?.primaryKey | false;
-        this.autoIncrement = options?.autoIncrement | false;
+        this.primaryKey = false;
+        this.autoIncrement = false;
         this.name = name;
-        this.allowNull = options?.allowNull | this.defaultAllowNull();
+        this.allowNull = this.defaultAllowNull();
+
+        if(options?.allowNull != undefined)
+        {
+            this.allowNull = options?.allowNull;
+        }
+        if(options?.primaryKey != undefined)
+        {
+            this.primaryKey = options?.primaryKey;
+        }
+        if(options?.autoIncrement != undefined)
+        {
+            this.autoIncrement = options?.autoIncrement;
+        }
 
         if(possibleSizes.includes(size?.label))
         {

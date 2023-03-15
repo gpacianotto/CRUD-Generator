@@ -25,6 +25,7 @@ const read = require('./CRUDOperations/read');
 const list = require('./CRUDOperations/list');
 const update = require('./CRUDOperations/update');
 const destroy = require('./CRUDOperations/destroy');
+const deleteTable = require('./Delete/delete-table');
 
 databaseSync();
 
@@ -79,12 +80,12 @@ app.post(
 )
 
 app.delete(
-  '/table/delete',
+  '/table/delete/:tableId',
   jsonParser,
   authenticators.authSystem, 
   authenticators.authUser, 
   (req, res, next) => permissionVerifier(req, res, next, ['admin']),
-  // (req, res) => {}
+  deleteTable
 );
 
 app.get(
