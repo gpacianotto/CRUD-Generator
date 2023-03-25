@@ -1,14 +1,10 @@
 const express = require('express')
 const bodyParser = require('body-parser');
-const {initializeApp} = require('firebase/app');
-const signUpFirebase = require('./Auth/firebase-signup');
-const signInFirebase = require('./Auth/firebase-signin');
 const signUp = require('./Auth/signup');
 const newSystem = require('./Create/new-system');
 
 const databaseSync = require('./syncer-db');
 
-const firebaseConfig = require('./Configs/firebase');
 const signUpMiddleware = require('./Middlewares/sign-up-middleware');
 const signIn = require('./Auth/signin');
 const signInMiddleware = require('./Middlewares/sign-in-middleware');
@@ -30,8 +26,7 @@ const deleteTable = require('./Delete/delete-table');
 databaseSync();
 
 
-// Initialize Firebase
-const appFirebase = initializeApp(firebaseConfig);
+
 
 
 const app = express()
@@ -47,13 +42,6 @@ app.get('/', (req, res) => {
 // create application/json parser
 var jsonParser = bodyParser.json();
 
-function middlewareTest(req, res, next)
-{
-  console.log("req:");
-  console.log(req.headers);
-
-  next();
-}
 
 function test(req, res, next)
 {
