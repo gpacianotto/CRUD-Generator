@@ -168,7 +168,7 @@ async function signUp(req, res)
         return;
     }
 
-    const hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(parseInt(process.env.SALT_HASH)));
+    const hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(parseInt(process.env.HASH_SALT_ROUNDS)));
     const existingUser = await doesUserExist(email);
     
     if(!!existingUser)
