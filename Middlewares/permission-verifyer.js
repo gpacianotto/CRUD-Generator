@@ -34,6 +34,7 @@ function permissionVerifier(req, res, next, permissions)
             code: "Permission Error", 
             message: "Your account has no permission to do that",
         });
+        return;
         
     }
 }

@@ -25,6 +25,7 @@ async function listAccounts(req, res, next) {
                 event: "OK",
                 response: result
             });
+            return;
         }).catch((err) => {
             res.json({
                 event: "error", 
@@ -32,6 +33,7 @@ async function listAccounts(req, res, next) {
                 message: "Something went wrong while trying to list your accounts",
                 error: err
             });
+            return;
         })
     }
 
@@ -42,6 +44,7 @@ async function listAccounts(req, res, next) {
                 event: "OK",
                 response: result
             });
+            return;
         }).catch((err) => {
             res.json({
                 event: "error", 
@@ -49,29 +52,15 @@ async function listAccounts(req, res, next) {
                 message: "Something went wrong while trying to list your accounts",
                 error: err
             });
+            return;
         })
         res.json({
             account: account,
             user: user,
             system: system
         });
+        return;
     }
-
-    // await Account.findAndCountAll({limit: perPage, offset: offset, where: {
-
-    // }}).then((result) => {
-    //     res.json({
-    //         event: "OK",
-    //         response: result
-    //     });
-    // }).catch((err) => {
-    //     res.json({
-    //         event: "error", 
-    //         code: "Listing Error", 
-    //         message: "Something went wrong while trying to list your systems",
-    //         error: err
-    //     });
-    // });
 }
 
 module.exports = listAccounts;

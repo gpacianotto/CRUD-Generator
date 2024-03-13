@@ -105,15 +105,6 @@ async function update(req, res) {
         return found;
     })
 
-    // if(whereValues.includes(undefined))
-    // {
-    //     res.json({
-    //         event: "error",
-    //         code: "Input error",
-    //         message: "You haven't sent 'where' object",
-    //     });
-    //     return;
-    // }
 
     collumns.map((col, index) => {
         if(!!values[index]){
@@ -151,9 +142,7 @@ async function update(req, res) {
 
     SQLString = SQLString + ";"
 
-    // res.json({
-    //     SQLString: SQLString
-    // })
+    
 
     const response = await runSQL(SQLString);
 
@@ -164,6 +153,8 @@ async function update(req, res) {
     }
     
     res.json(response);
+
+    return;
 
 }
 

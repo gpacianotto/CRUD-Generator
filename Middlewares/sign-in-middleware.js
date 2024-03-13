@@ -63,6 +63,7 @@ async function signInMiddleware(req, res, next) {
         {
             service.setCurrentSystem(system);
             next();
+            return;
         }
         
     }

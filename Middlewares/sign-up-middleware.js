@@ -53,6 +53,7 @@ async function signUpMiddleware(req, res, next) {
             {
                 console.log("system validated: ", systems[0])
                 next();
+                return;
             }
         }).catch((error) => {
             res.json(

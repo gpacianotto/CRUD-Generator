@@ -144,17 +144,6 @@ async function signUp(req, res)
         )
         return;
     }
-    
-    // if(!loginValidator.systemId(systemId) && role != 'root')
-    // {
-    //     res.json(
-    //         {
-    //         event: "error", 
-    //         code: "Validation Error", 
-    //         message: "Invalid System ID"
-    //         }
-    //     )
-    // }
 
     if(!systemToken)
     {
@@ -228,7 +217,7 @@ async function signUp(req, res)
                         message: "Root Account Registered successfully",
                         account: accountResult,
                         system: rootSystem
-                    })
+                    });
                     
                 }).catch((erro) => {
                     
