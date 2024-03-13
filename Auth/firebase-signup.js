@@ -81,50 +81,12 @@ function signUpFirebase(body, res){
           )
           return;
         }
-
-        
-
-        // const auth = getAuth();
-        // createUserWithEmailAndPassword(auth, body.email, body.password)
-        //   .then((userCredential) => {
-        //     // Signed in
-        //     const user = userCredential.user;
-        //     const objectSend = {
-        //       fireBaseUid: user.uid,
-        //       role: body.role,
-        //       fullName: body.fullName,
-        //       birthDate: body.birthDate,
-        //       active: body.active,
-        //       website: body.website,
-        //       fireBaseEmail: user.email,
-
-        //     }
-
-        //     User.create(objectSend).then((p) => {
-              
-        //       let responseComplete = p
-              
-        //       responseComplete.parent = parent;
-
-        //       res.json(responseComplete);
-        //     }).catch((err) => {
-        //       res.json(err);
-        //     });
-
-            
-        //   })
-        //   .catch((error) => {
-        //     const errorCode = error.code;
-        //     const errorMessage = error.message;
-
-        //     res.json({event: "error", code: errorCode, message: errorMessage});
-        //     // ..
-        //   });
-
           }).catch((err) => {
             res.json(err);
+            return;
           });
         }
+        return;
 
 }
 

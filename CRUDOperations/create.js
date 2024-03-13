@@ -142,10 +142,13 @@ async function create(req, res) {
             message: "your data has been stored successfully",
             response: createRows,
         });
+        return;
     }
 
 
     res.json(createRows);
+
+    return;
 
 }
 

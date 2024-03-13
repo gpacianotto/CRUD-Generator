@@ -37,6 +37,7 @@ async function listTables(req, res) {
                 response: tables,
                 system: system
             });
+            return;
         }).catch((error) => {
             res.json({
                 event: "error",
@@ -44,6 +45,7 @@ async function listTables(req, res) {
                 message: "Houve algum erro",
                 erro: error
             })
+            return;
         })
     }
 

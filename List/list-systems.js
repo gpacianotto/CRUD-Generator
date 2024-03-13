@@ -15,6 +15,7 @@ async function listSystems(req, res, next)
             event: "OK",
             response: result
         });
+        return;
     }).catch((err) => {
         res.json({
             event: "error", 
@@ -22,7 +23,10 @@ async function listSystems(req, res, next)
             message: "Something went wrong while trying to list your systems",
             error: err
         });
+        return;
     });
+
+    return;
 
 }
 

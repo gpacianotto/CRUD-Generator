@@ -22,6 +22,7 @@ async function createNewTable(req, res) {
                 message: "You should send an array 'collumns' with your table's collumns data, see the docs here: ",
             }
         );
+        return;
     }
 
 
@@ -76,7 +77,8 @@ async function createNewTable(req, res) {
                             table: metaTable,
                             collumns: result
                         }
-                    }) 
+                    })
+                    return; 
                 })
                 
             }).catch(async (err) => {
@@ -90,10 +92,12 @@ async function createNewTable(req, res) {
                         abortedCreation: abortedCreation
                     }
                 );
+                return;
             })
         }
 
         // res.json(tableCreation);
+        return;
     }
 
    

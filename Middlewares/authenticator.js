@@ -109,6 +109,7 @@ async function authSystem(req, res, next) {
     if(rootSystemExistance === 2)
     {
         next();
+        return;
     }
 
     if(rootSystemExistance === 0)
@@ -189,6 +190,7 @@ async function authUser(req, res, next) {
                 message: "Your token has expired"
                 }
             )
+            return;
         }
         else {
             requestService.setCurrentUser(user.user);
@@ -197,6 +199,7 @@ async function authUser(req, res, next) {
             requestService.setUsersSystem(user.usersSystem);
         
             next();
+            return;
         }
        
     }
@@ -237,6 +240,7 @@ async function authRootUser(req, res, next)
     if(rootSystemExistance === 2)
     {
         next();
+        return;
     }
 
     if(rootSystemExistance === 0)
@@ -301,6 +305,7 @@ async function authRootUser(req, res, next)
             requestService.setCurrentSession(user.session);
         
             next();
+            return;
         }
     }
 

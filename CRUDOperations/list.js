@@ -76,6 +76,7 @@ async function list(req, res) {
     }
     res.json(getRows);
 
+    return;
 }
 
 module.exports = list

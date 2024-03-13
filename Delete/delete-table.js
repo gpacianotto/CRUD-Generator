@@ -86,6 +86,7 @@ async function deleteTable(req, res) {
                     message: "something wentWrong while trying to delete your collumns",
                     error: e
                 });
+                return;
             })
         }).catch((err) => {
             res.json({
@@ -94,12 +95,13 @@ async function deleteTable(req, res) {
                 message: "something wentWrong while trying to delete your table metadata.",
                 error: err
             });
+            return;
         })
     }
 
     res.json(response);
     
-
+    return;
 }
 
 module.exports = deleteTable

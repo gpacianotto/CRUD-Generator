@@ -81,6 +81,8 @@ async function destroy(req, res) {
     
     res.json(getRow);
 
+    return;
+
 }
 
 module.exports = destroy

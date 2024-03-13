@@ -13,7 +13,8 @@ function signInFirebase(body, res){
             code: "Validation Error", 
             message: "Email is not in a correct format"
           }
-        )
+        );
+        return;
     }
 
     
@@ -25,14 +26,17 @@ function signInFirebase(body, res){
         const user = userCredential.user;
 
         res.json(user);
+
+        return;
         // ...
     })
     .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         res.json({event: "error", code: errorCode, message: errorMessage});
+        return;
     });
-
+    return;
 }
 
 module.exports = signInFirebase

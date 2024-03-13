@@ -70,7 +70,7 @@ async function newSystem(body, res)
             message: "There was an error while trying to create your system"
             })
     })
-
+    return;
 } 
 
 module.exports = newSystem;

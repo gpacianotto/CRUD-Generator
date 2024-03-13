@@ -148,13 +148,15 @@ app.post('/testing', jsonParser, authenticators.authSystem, authenticators.authU
 
 app.post('/testing123', jsonParser, (req, res) => {
   res.json(req.body);
+  return;
 });
 
 app.get('/test-api', jsonParser, (req, res) => {
   res.json({
     message: "testing",
     state: "everything ok"
-  })
+  });
+  return;
 })
 
 app.listen(port, () => {

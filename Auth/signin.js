@@ -114,20 +114,6 @@ async function signIn(body, res) {
     const {email, password, systemId} = body;
     const service = RequestService.getInstance();
     let system = service.getCurrentSystem();
-    
-    // if(!loginValidator.email(email))
-    // {
-    //     res.json(
-    //         {
-    //         event: "error", 
-    //         code: "Validation Error", 
-    //         message: "Email is not in a correct format"
-    //         }
-    //     )
-    //     return;
-    // }
-    
-
     const user = await SignUp.doesUserExist(email);
 
     if(!user)
@@ -204,6 +190,7 @@ async function signIn(body, res) {
                         message: "There was an error while trying to register your session"
                         }
                     )
+                    return;
                 }
                 
             }
@@ -215,6 +202,7 @@ async function signIn(body, res) {
                     message: "Wrong Password"
                     }
                 )
+                return;
             }
             
              
@@ -229,6 +217,7 @@ async function signIn(body, res) {
                 message: "Account not found"
                 }
             )
+            return;
         }
 
         

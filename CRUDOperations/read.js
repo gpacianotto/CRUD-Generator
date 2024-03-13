@@ -81,6 +81,8 @@ async function read(req, res) {
     
     res.json(getRow);
 
+    return;
+
 }
 
 module.exports = read
