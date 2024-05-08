@@ -31,7 +31,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 3000:$APP_PORT
+      - $APP_PORT:$APP_PORT
     depends_on:
       data-base:
         condition: service_healthy

@@ -1,17 +1,17 @@
-# Use an official Node.js runtime as the base image
+# Toma como base a imagem oficial do Node.js na versão 20.0
 FROM node:20
 
-# Set the working directory in the container
+# Cria um diretório de trabalho no container e entra no diretório
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json to the working directory
+# Copia todos os arquivos da raíz do projeto na raíz do diretório de trabalho
 COPY . .
 
-# Install the dependencies
+# Executa comando de instalar as dependências
 RUN yarn install
 
-# Expose the port the app runs on
+# Expõe a porta 3344 para o lado de fora do container
 EXPOSE 3344
 
-# Command to run the application
+# Executa comando de iniciar a aplicação
 CMD ["yarn", "start"]
