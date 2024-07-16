@@ -30,7 +30,7 @@ databaseSync();
 
 
 const app = express()
-const port = 3344
+const port = process.env.PORT ? process.env.PORT : 3344
 
 app.use(cors());
 
